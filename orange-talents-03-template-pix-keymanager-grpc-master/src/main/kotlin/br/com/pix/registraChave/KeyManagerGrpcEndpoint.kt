@@ -13,6 +13,7 @@ import javax.inject.Singleton
 
 @Singleton
 class KeyManagerGrpcEndpoint(private val cadastraChavePixService: CadastraChavePixService) : KeyManagerServiceGrpc.KeyManagerServiceImplBase() {
+
     override fun cadastroChavePix(
         request: RegistroChaveRequest?,
         responseObserver: StreamObserver<RegistroChaveResponse>?
@@ -32,12 +33,10 @@ class KeyManagerGrpcEndpoint(private val cadastraChavePixService: CadastraChaveP
                     .setChavePix(chavePix.chave)
                     .build())
             responseObserver.onCompleted()
-        } catch (e: Exception) {
-            when (e) {
-                is PixExistenteException -> responseObserver?.errorResponse(Status.ALREADY_EXISTS, ErrorMessage(e.message))
-                is java.lang.IllegalStateException -> responseObserver?.errorResponse(Status.INVALID_ARGUMENT, ErrorMessage(e.message))
-                else -> responseObserver?.errorResponse(Status.INTERNAL, ErrorMessage(e.message))
-            }
+        } catch (e: PixExistenteException) {
+            responseObserver?.errorResponse(Status.ALREADY_EXISTS, ErrorMessage(e.message))
+        } catch (e: IllegalStateException) {
+            responseObserver?.errorResponse(Status.NOT_FOUND, ErrorMessage(e.message))
         }
     }
 }

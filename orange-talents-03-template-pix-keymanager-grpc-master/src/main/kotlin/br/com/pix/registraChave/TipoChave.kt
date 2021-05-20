@@ -2,7 +2,7 @@ package br.com.pix.registraChave
 
 import br.com.pix.RegistroChaveRequest
 import br.com.pix.validacao.ErrorMessage
-import io.micronaut.validation.validator.constraints.EmailValidator
+import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator
 import org.hibernate.validator.internal.constraintvalidators.hv.br.CPFValidator
 
 enum class TipoChave {
@@ -48,8 +48,7 @@ enum class TipoChave {
             if (chave.isNullOrBlank()) {
                 return ErrorMessage(
                     description = "Email é obrigatório",
-                    augmentDescription = "Formato esperado é email@email.com"
-                )
+                    augmentDescription = "Formato esperado é email@email.com")
             }
 
             val isEmailValido = EmailValidator().run {
@@ -60,8 +59,7 @@ enum class TipoChave {
             if (!isEmailValido) {
                 return ErrorMessage(
                     description = "Por favor insira um formato de email válido",
-                    augmentDescription = "Formato esperado é email@email.com"
-                )
+                    augmentDescription = "Formato esperado é email@email.com")
             }
 
             return null
