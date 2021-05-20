@@ -1,32 +1,34 @@
 package br.com.pix.registraChave.validacao
 
 import br.com.pix.RegistroChaveRequest
-import br.com.pix.registraChave.TipoChave
-import br.com.pix.registraChave.TipoConta
-import br.com.pix.registraChave.requestParaTipoChave
-import br.com.pix.registraChave.requestParaTipoConta
+import br.com.pix.compartilhado.chavePix.TipoChave
+import br.com.pix.compartilhado.chavePix.TipoConta
+import br.com.pix.compartilhado.chavePix.requestParaTipoChave
+import br.com.pix.compartilhado.chavePix.requestParaTipoConta
+
 import br.com.pix.validacao.ErrorMessage
 
-fun validaRequest(request: RegistroChaveRequest?): ErrorMessage? {
-    var possibleErrorMessage = validaIdCliente(request?.idCliente)
+fun RegistroChaveRequest?.valida(): ErrorMessage? {
+    var possibleErrorMessage = validaIdCliente(this?.idCliente)
     possibleErrorMessage?.let {
         return it
     }
 
-    possibleErrorMessage = validaTipoChave(request?.tipoChave)
+    possibleErrorMessage = validaTipoChave(this?.tipoChave)
     possibleErrorMessage?.let {
         return it
     }
 
-    possibleErrorMessage = requestParaTipoChave(request?.tipoChave).valida(request?.chave)
+    possibleErrorMessage = requestParaTipoChave(this?.tipoChave).valida(this?.chave)
     possibleErrorMessage?.let {
         return it
     }
 
-    possibleErrorMessage = validaTipoConta(request?.tipoConta)
+    possibleErrorMessage = validaTipoConta(this?.tipoConta)
     possibleErrorMessage?.let {
         return it
     }
+
     return null
 }
 

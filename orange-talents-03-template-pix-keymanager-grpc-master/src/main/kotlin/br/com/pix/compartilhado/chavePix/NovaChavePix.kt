@@ -1,5 +1,6 @@
-package br.com.pix.registraChave
+package br.com.pix.compartilhado.chavePix
 
+import br.com.pix.registraChave.ContaUsuario
 import io.micronaut.core.annotation.Introspected
 import org.hibernate.validator.constraints.Length
 import java.util.*
@@ -16,7 +17,7 @@ class NovaChavePix(
     @field:NotNull @Embedded val conta: ContaUsuario
 ) {
     fun toModel(): ChavePix {
-        return ChavePix(idCliente, tipoConta, chave, tipoChave, conta)
+        return ChavePix(UUID.fromString(idCliente), tipoConta, chave, tipoChave, conta)
     }
 
     init {

@@ -1,6 +1,8 @@
 package br.com.pix.registraChave
 
 import br.com.pix.RegistroChaveRequest
+import br.com.pix.compartilhado.chavePix.TipoConta
+import br.com.pix.compartilhado.chavePix.requestParaTipoConta
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

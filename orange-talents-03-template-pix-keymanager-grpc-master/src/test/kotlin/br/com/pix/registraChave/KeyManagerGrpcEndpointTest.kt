@@ -2,7 +2,11 @@ package br.com.pix.registraChave
 
 import br.com.pix.KeyManagerServiceGrpc
 import br.com.pix.RegistroChaveRequest
-import br.com.pix.integracao.ErpClient
+import br.com.pix.compartilhado.chavePix.ChavePix
+import br.com.pix.compartilhado.chavePix.ChavePixRepository
+import br.com.pix.compartilhado.chavePix.TipoChave
+import br.com.pix.compartilhado.chavePix.TipoConta
+import br.com.pix.compartilhado.integracao.ErpClient
 import io.grpc.ManagedChannel
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
@@ -71,7 +75,7 @@ internal class KeyManagerGrpcEndpointTest(
     fun `nao deve registrar chave pix quando chave existir`() {
         //Cenario
         val chave = "45723279041"
-        val chavePix  = ChavePix(CLIENTE_ID.toString(),TipoConta.CONTA_CORRENTE,"45723279041", TipoChave.CPF,
+        val chavePix  = ChavePix(CLIENTE_ID, TipoConta.CONTA_CORRENTE,"45723279041", TipoChave.CPF,
             ContaUsuario("ITAÚ UNIBANCO S.A.", "60701190",
                 "renato", "45723279041", "0001", "291900"))
         repository.save(chavePix)
@@ -134,7 +138,6 @@ internal class KeyManagerGrpcEndpointTest(
             assertNotNull(status.description)
         }
     }
-
 
     @MockBean(ErpClient::class)
     fun erpClient(): ErpClient? {

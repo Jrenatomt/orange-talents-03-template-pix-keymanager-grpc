@@ -8,8 +8,11 @@ option objc_class_prefix = "HLW";
 package br.com.pix;
 
 service KeyManagerService {
-
   rpc cadastroChavePix (RegistroChaveRequest) returns (RegistroChaveResponse) {}
+}
+
+service KeyManagerRemoveService {
+  rpc removerChavePix(RemocaoChaveRequest) returns (RemocaoChaveResponse) {}
 }
 
 message RegistroChaveRequest {
@@ -34,4 +37,14 @@ message RegistroChaveRequest {
 message RegistroChaveResponse {
   string idPix = 1;
   string chavePix = 2;
+}
+
+message RemocaoChaveRequest {
+  string idPix = 1;
+  string idCliente = 2;
+}
+
+message RemocaoChaveResponse {
+  string idPix = 1;
+  string idCliente = 2;
 }

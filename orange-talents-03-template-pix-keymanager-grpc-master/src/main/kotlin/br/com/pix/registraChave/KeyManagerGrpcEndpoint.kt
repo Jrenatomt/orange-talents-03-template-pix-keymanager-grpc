@@ -3,40 +3,35 @@ package br.com.pix.registraChave
 import br.com.pix.KeyManagerServiceGrpc
 import br.com.pix.RegistroChaveRequest
 import br.com.pix.RegistroChaveResponse
-import br.com.pix.registraChave.exception.PixExistenteException
-import br.com.pix.registraChave.validacao.validaRequest
-import br.com.pix.validacao.ErrorMessage
+import br.com.pix.registraChave.validacao.valida
 import br.com.pix.validacao.errorResponse
 import io.grpc.Status
 import io.grpc.stub.StreamObserver
 import javax.inject.Singleton
 
 @Singleton
-class KeyManagerGrpcEndpoint(private val cadastraChavePixService: CadastraChavePixService) : KeyManagerServiceGrpc.KeyManagerServiceImplBase() {
+class KeyManagerGrpcEndpoint(private val cadastraChavePixService: CadastraChavePixService) :
+    KeyManagerServiceGrpc.KeyManagerServiceImplBase() {
 
     override fun cadastroChavePix(
         request: RegistroChaveRequest?,
         responseObserver: StreamObserver<RegistroChaveResponse>?
     ) {
-        val possibleValidationError = validaRequest(request)
+        val possibleValidationError = request.valida()
         possibleValidationError?.let {
             responseObserver?.errorResponse(Status.INVALID_ARGUMENT, it)
             return
         }
 
-        try {
-            val chavePix = cadastraChavePixService.registra(request)
 
-            responseObserver!!.onNext(
-                RegistroChaveResponse.newBuilder()
-                    .setIdPix(chavePix.id.toString())
-                    .setChavePix(chavePix.chave)
-                    .build())
-            responseObserver.onCompleted()
-        } catch (e: PixExistenteException) {
-            responseObserver?.errorResponse(Status.ALREADY_EXISTS, ErrorMessage(e.message))
-        } catch (e: IllegalStateException) {
-            responseObserver?.errorResponse(Status.NOT_FOUND, ErrorMessage(e.message))
-        }
+        val chavePix = cadastraChavePixService.registra(request)
+        responseObserver!!.onNext(
+            RegistroChaveResponse.newBuilder()
+                .setIdPix(chavePix.id.toString())
+                .setChavePix(chavePix.chave)
+                .build()
+        )
+        responseObserver.onCompleted()
+
     }
 }

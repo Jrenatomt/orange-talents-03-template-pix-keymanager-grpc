@@ -71,7 +71,7 @@ internal class ValidaKtTest{
             .setChave("teste@teste.com")
             .setTipoConta(RegistroChaveRequest.TipoConta.CONTA_POUPANCA)
             .build()
-        val result = validaRequest(request)
+        val result = request.valida()
         assertEquals(null, result)
     }
 
@@ -83,7 +83,7 @@ internal class ValidaKtTest{
             .setChave("chave")
             .setTipoConta(RegistroChaveRequest.TipoConta.valueOf("CONTA_CORRENTE"))
             .build()
-        val result = validaRequest(request)
+        val result = request.valida()
         assertTrue(result is ErrorMessage)
     }
 }

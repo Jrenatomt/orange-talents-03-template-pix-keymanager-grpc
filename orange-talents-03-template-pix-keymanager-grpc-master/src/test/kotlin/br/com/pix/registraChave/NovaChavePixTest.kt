@@ -1,5 +1,8 @@
 package br.com.pix.registraChave
 
+import br.com.pix.compartilhado.chavePix.NovaChavePix
+import br.com.pix.compartilhado.chavePix.TipoChave
+import br.com.pix.compartilhado.chavePix.TipoConta
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.util.*

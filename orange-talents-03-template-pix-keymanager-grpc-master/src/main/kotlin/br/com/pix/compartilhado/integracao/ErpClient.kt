@@ -1,7 +1,7 @@
-package br.com.pix.integracao
+package br.com.pix.compartilhado.integracao
 
+import br.com.pix.compartilhado.chavePix.TipoConta
 import br.com.pix.registraChave.ContaUsuarioResponse
-import br.com.pix.registraChave.TipoConta
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.QueryValue

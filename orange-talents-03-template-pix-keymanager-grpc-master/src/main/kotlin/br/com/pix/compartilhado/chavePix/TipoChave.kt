@@ -1,4 +1,4 @@
-package br.com.pix.registraChave
+package br.com.pix.compartilhado.chavePix
 
 import br.com.pix.RegistroChaveRequest
 import br.com.pix.validacao.ErrorMessage

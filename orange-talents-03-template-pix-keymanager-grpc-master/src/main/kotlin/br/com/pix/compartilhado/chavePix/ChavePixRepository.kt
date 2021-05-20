@@ -1,4 +1,4 @@
-package br.com.pix.registraChave
+package br.com.pix.compartilhado.chavePix
 
 import io.micronaut.data.annotation.Repository
 import io.micronaut.data.jpa.repository.JpaRepository
@@ -8,4 +8,6 @@ import java.util.*
 interface ChavePixRepository : JpaRepository<ChavePix, UUID> {
 
     fun existsByChave(chave: String): Boolean
+
+    fun findByIdAndIdCliente(id: UUID, idCliente: UUID): ChavePix?
 }

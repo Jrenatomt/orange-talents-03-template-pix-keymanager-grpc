@@ -1,8 +1,9 @@
 package br.com.pix.registraChave
 
 import br.com.pix.RegistroChaveRequest
-import br.com.pix.integracao.ErpClient
-import br.com.pix.registraChave.exception.PixExistenteException
+import br.com.pix.compartilhado.chavePix.*
+import br.com.pix.compartilhado.integracao.ErpClient
+import br.com.pix.compartilhado.exception.PixExistenteException
 import org.slf4j.LoggerFactory
 import javax.inject.Singleton
 

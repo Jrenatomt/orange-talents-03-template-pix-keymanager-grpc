@@ -1,5 +1,6 @@
 package br.com.pix.registraChave
 
+import br.com.pix.compartilhado.chavePix.TipoChave
 import br.com.pix.validacao.ErrorMessage
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Nested
