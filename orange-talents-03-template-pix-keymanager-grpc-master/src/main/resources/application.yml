@@ -35,4 +35,5 @@ itau:
 
 
 bancocentral:
-    url: ${$BCB_API:`http://localhost:8082/api/v1/pix`}
+  pix:
+    url: ${$BCB_API:`http://localhost:8082`}

@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull
 class ChavePix(
     @field:NotBlank val idCliente: UUID,
     @field:NotNull @Enumerated(EnumType.STRING) @Column(nullable = false) val tipoConta: TipoConta,
-    @field:NotBlank val chave: String,
+    @field:NotBlank @Column(unique = true, nullable = false, length = 77) var chave: String,
     @field:NotNull @Enumerated(EnumType.STRING) @Column(nullable = false) val tipoChavePix: TipoChave,
     @field:NotNull @Embedded val conta: ContaUsuario
 ) {
@@ -21,4 +21,17 @@ class ChavePix(
 
     @Column(updatable = false, nullable = false)
     val criadoEm: LocalDateTime = LocalDateTime.now()
+
+    fun atualizaChavePix(key: String): Boolean {
+        if (isAleatoria()) {
+            this.chave = key
+            return true
+        }
+
+        return false
+    }
+
+    fun isAleatoria(): Boolean {
+        return tipoChavePix == TipoChave.ALEATORIA
+    }
 }

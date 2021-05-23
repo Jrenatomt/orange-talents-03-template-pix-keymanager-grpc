@@ -6,6 +6,9 @@ import br.com.pix.compartilhado.chavePix.ChavePix
 import br.com.pix.compartilhado.chavePix.ChavePixRepository
 import br.com.pix.compartilhado.chavePix.TipoChave
 import br.com.pix.compartilhado.chavePix.TipoConta
+import br.com.pix.compartilhado.integracao.BancoCentralClient
+import br.com.pix.compartilhado.integracao.DeletePixKeyRequest.Companion.toRequest
+import br.com.pix.compartilhado.integracao.DeletePixKeyResponse
 import br.com.pix.registraChave.ContaUsuario
 import br.com.pix.registraChave.KeyManagerGrpcEndpointTest
 import io.grpc.ManagedChannel
@@ -15,18 +18,25 @@ import io.micronaut.context.annotation.Bean
 import io.micronaut.context.annotation.Factory
 import io.micronaut.grpc.annotation.GrpcChannel
 import io.micronaut.grpc.server.GrpcServerChannel
+import io.micronaut.http.HttpResponse
+import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito
 import java.util.*
+import javax.inject.Inject
 
 @MicronautTest(transactional = false)
 internal class RemocaoChavePixEndpointTest(
     private val repository: ChavePixRepository,
     private val grpcClient: KeyManagerRemoveServiceGrpc.KeyManagerRemoveServiceBlockingStub
 ) {
+    @Inject
+    lateinit var bancoCentralClient: BancoCentralClient
+
     companion object {
         var idPix: UUID? = null
         var idCliente: UUID? = null
@@ -44,6 +54,10 @@ internal class RemocaoChavePixEndpointTest(
 
     @Test
     fun `deve remover chave pix quando dados validos`() {
+        val chavePix = chavePixModel()
+        Mockito.`when`(bancoCentralClient.removeChave(chavePix.chave, chavePix.toRequest()))
+            .thenReturn(HttpResponse.ok(DeletePixKeyResponse(chavePix.chave, chavePix.conta.instituicaoIspb)))
+
         grpcClient.removerChavePix(remocaoChaveRequest(idPix = idPix.toString(), idCliente = idCliente.toString()))
         assertNull(repository.findByIdAndIdCliente(idPix!!, idCliente!!))
     }
@@ -90,6 +104,24 @@ internal class RemocaoChavePixEndpointTest(
         }
     }
 
+    @Test
+    fun `nao deve remover chave quando acontecer algum erro no bcb`() {
+        val chavePix = chavePixModel()
+
+        Mockito.`when`(bancoCentralClient.removeChave(chavePix.chave, chavePix.toRequest()))
+            .thenReturn(HttpResponse.unauthorized())
+
+        val thrown = assertThrows<StatusRuntimeException> {
+            grpcClient.removerChavePix(remocaoChaveRequest(idPix = idPix.toString(), idCliente = idCliente.toString()))
+        }
+
+        with(thrown) {
+            assertEquals(Status.FAILED_PRECONDITION.code, status.code)
+            assertEquals("Erro ao remover a chave no banco central", status.description)
+            assertNotNull(repository.findById(idPix!!))
+        }
+    }
+
     private fun chavePixModel(): ChavePix {
         return ChavePix(KeyManagerGrpcEndpointTest.CLIENTE_ID,
             TipoConta.CONTA_CORRENTE,
@@ -110,6 +142,11 @@ internal class RemocaoChavePixEndpointTest(
             .setIdPix(idPix)
             .setIdCliente(idCliente)
             .build()
+    }
+
+    @MockBean(BancoCentralClient::class)
+    fun bancoCentralClient(): BancoCentralClient? {
+        return Mockito.mock(BancoCentralClient::class.java)
     }
 
     @Factory

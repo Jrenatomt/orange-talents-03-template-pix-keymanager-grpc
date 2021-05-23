@@ -41,7 +41,7 @@ fun validaIdCliente(clientId: String?): ErrorMessage? {
         return ErrorMessage(description = "Id do cliente deve conter um formato UUID válido")
     }
 
-    clientId?.let {
+    clientId.let {
         return null
     }
 }

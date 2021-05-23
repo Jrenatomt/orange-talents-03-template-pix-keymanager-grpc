@@ -21,7 +21,7 @@ class ExceptionHandlingInterceptor : ServerInterceptor {
             val exceptionParaStatus = when (e) {
                 is ChavePixInexistenteException -> Status.NOT_FOUND
                 is ClienteNaoEncontradoException -> Status.NOT_FOUND
-                is IllegalStateException -> Status.NOT_FOUND
+                is IllegalStateException -> Status.FAILED_PRECONDITION
                 is PixExistenteException -> Status.ALREADY_EXISTS
                 else -> Status.UNKNOWN
             }

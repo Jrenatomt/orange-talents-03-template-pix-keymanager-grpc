@@ -1,5 +1,6 @@
 package br.com.pix.compartilhado.chavePix
 
+import br.com.pix.RegistroChaveRequest
 import br.com.pix.registraChave.ContaUsuario
 import io.micronaut.core.annotation.Introspected
 import org.hibernate.validator.constraints.Length
@@ -19,6 +20,15 @@ class NovaChavePix(
     fun toModel(): ChavePix {
         return ChavePix(UUID.fromString(idCliente), tipoConta, chave, tipoChave, conta)
     }
+
+    constructor(request: RegistroChaveRequest?, conta: ContaUsuario) :
+            this(
+                idCliente = request!!.idCliente,
+                tipoConta = requestParaTipoConta(request.tipoConta),
+                chave = request.chave,
+                tipoChave = requestParaTipoChave(request.tipoChave),
+                conta = conta
+            )
 
     init {
         if (tipoChave == TipoChave.ALEATORIA) chave = UUID.randomUUID().toString()
