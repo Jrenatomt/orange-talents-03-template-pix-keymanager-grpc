@@ -42,7 +42,7 @@ internal class ConsultaGrpcEndpointTest(private val repository: ChavePixReposito
     }
 
     @Test
-    fun `deve consultar chave pix localmente quando informao idCliente e idPix`() {
+    fun `deve consultar chave pix localmente quando informao id do Cliente e id do Pix`() {
         val chavePix = chavePixModel()
         repository.save(chavePix)
 

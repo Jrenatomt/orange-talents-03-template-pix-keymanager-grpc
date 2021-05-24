@@ -1,4 +1,4 @@
-package br.com.pix.consultaPix
+package br.com.pix.listaPix
 
 import br.com.pix.*
 import br.com.pix.compartilhado.chavePix.ChavePixRepository
