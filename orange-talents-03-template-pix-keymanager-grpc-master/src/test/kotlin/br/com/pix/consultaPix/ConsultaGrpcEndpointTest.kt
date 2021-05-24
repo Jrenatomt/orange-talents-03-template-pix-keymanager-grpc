@@ -94,7 +94,7 @@ internal class ConsultaGrpcEndpointTest(private val repository: ChavePixReposito
     }
 
     @Test
-    fun `deve consultar chave no bcb quando for passado apenas ela e nao existir no banco`() {
+    fun `deve consultar chave pix no bcb quando for passado apenas ela e nao existir no banco`() {
         val chavePix = chavePixModel()
 
         `when`(bancoCentralClient.consultaChave(chavePix.chave))
@@ -118,7 +118,7 @@ internal class ConsultaGrpcEndpointTest(private val repository: ChavePixReposito
     }
 
     @Test
-    fun `deve retornar NOT_FOUND quando for passado chave que nao existir nem local nem no bcb`() {
+    fun `deve retornar NOT_FOUND quando for passado chave pix que nao existi`() {
         `when`(bancoCentralClient.consultaChave("1234567890"))
             .thenReturn(HttpResponse.notFound())
 
@@ -179,7 +179,7 @@ internal class ConsultaGrpcEndpointTest(private val repository: ChavePixReposito
             ),
             Owner(
                 Owner.Type.NATURAL_PERSON,
-                "Leonardo Delmiro",
+                "Renato marques",
                 "96498610093"
             ),
             createdAt = LocalDateTime.MIN
@@ -194,7 +194,7 @@ internal class ConsultaGrpcEndpointTest(private val repository: ChavePixReposito
             TipoChave.CPF,
             ContaUsuario("ITAÚ UNIBANCO S.A.",
                 "60701190",
-                "Leonardo Delmiro",
+                "Renato marques",
                 "96498610093",
                 "0001",
                 "291900")

@@ -3,6 +3,7 @@ package br.com.pix.compartilhado.integracao
 import br.com.pix.compartilhado.chavePix.ChavePix
 import br.com.pix.compartilhado.chavePix.TipoChave
 import br.com.pix.compartilhado.chavePix.TipoConta
+import br.com.pix.compartilhado.utils.Instituicoes
 import br.com.pix.consultaPix.DetalhesChavePix
 import br.com.pix.registraChave.ContaUsuario
 import io.micronaut.http.HttpResponse
@@ -45,7 +46,7 @@ class PixKeyDetailsResponse(val keyType: KeyType,
                 chavePix = key,
                 tipoConta = bankAccount.accountType.to(),
                 conta = ContaUsuario(
-                    instituicaoNome = bankAccount.participant,
+                    instituicaoNome = Instituicoes.nome(bankAccount.participant),
                     instituicaoIspb = bankAccount.participant,
                     nomeTitular = owner.name,
                     cpfTitular = owner.taxIdNumber,
