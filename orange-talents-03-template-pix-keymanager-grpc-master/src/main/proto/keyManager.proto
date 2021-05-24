@@ -21,6 +21,11 @@ service KeyManagerConsultaService {
   rpc consultaChave(ConsultaChaveRequest) returns (ConsultaChaveResponse) {}
 }
 
+service KeyManagerListaService {
+
+  rpc listaChaves(ListaChavesRequest) returns (ListaChavesResponse) {}
+}
+
 message RegistroChaveRequest {
   string idCliente = 1;
   TipoChave tipoChave = 2;
@@ -92,4 +97,22 @@ enum TipoChave {
   CELULAR   = 2;
   EMAIL     = 3;
   ALEATORIA = 4;
+}
+
+message ListaChavesRequest {
+  string idCliente = 1;
+}
+
+message ListaChavesResponse {
+
+  string idCliente = 1;
+  repeated ChaveResponse chavesPix = 2;
+
+  message ChaveResponse {
+    string idPix = 1;
+    TipoChave tipoChave = 2;
+    string chave = 3;
+    TipoConta tipoConta = 4;
+    google.protobuf.Timestamp criadoEm = 5;
+  }
 }
