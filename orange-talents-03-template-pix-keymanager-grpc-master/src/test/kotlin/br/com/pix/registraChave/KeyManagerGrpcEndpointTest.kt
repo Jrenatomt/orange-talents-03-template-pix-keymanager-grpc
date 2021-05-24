@@ -1,5 +1,7 @@
 package br.com.pix.registraChave
 
+import br.com.pix.TipoConta as TipoContaGrpc
+import br.com.pix.TipoChave as TipoChaveGrpc
 import br.com.pix.KeyManagerServiceGrpc
 import br.com.pix.RegistroChaveRequest
 import br.com.pix.compartilhado.chavePix.ChavePix
@@ -63,9 +65,9 @@ internal class KeyManagerGrpcEndpointTest(
         val response = grpcClient.cadastroChavePix(
             RegistroChaveRequest.newBuilder()
                 .setIdCliente(CLIENTE_ID.toString())
-                .setTipoChave(RegistroChaveRequest.TipoChave.CPF)
+                .setTipoChave(TipoChaveGrpc.CPF)
                 .setChave("35122922080")
-                .setTipoConta(RegistroChaveRequest.TipoConta.CONTA_CORRENTE)
+                .setTipoConta(TipoContaGrpc.CONTA_CORRENTE)
                 .build()
         )
 
@@ -97,9 +99,9 @@ internal class KeyManagerGrpcEndpointTest(
             grpcClient.cadastroChavePix(
                 RegistroChaveRequest.newBuilder()
                     .setIdCliente(CLIENTE_ID.toString())
-                    .setTipoChave(RegistroChaveRequest.TipoChave.CPF)
+                    .setTipoChave(TipoChaveGrpc.CPF)
                     .setChave(chave)
-                    .setTipoConta(RegistroChaveRequest.TipoConta.CONTA_CORRENTE)
+                    .setTipoConta(TipoContaGrpc.CONTA_CORRENTE)
                     .build()
             )
         }
@@ -119,9 +121,9 @@ internal class KeyManagerGrpcEndpointTest(
             grpcClient.cadastroChavePix(
                 RegistroChaveRequest.newBuilder()
                     .setIdCliente(CLIENTE_ID.toString())
-                    .setTipoChave(RegistroChaveRequest.TipoChave.CPF)
+                    .setTipoChave(TipoChaveGrpc.CPF)
                     .setChave(chavePix)
-                    .setTipoConta(RegistroChaveRequest.TipoConta.CONTA_CORRENTE)
+                    .setTipoConta(TipoContaGrpc.CONTA_CORRENTE)
                     .build()
             )
         }
@@ -141,9 +143,9 @@ internal class KeyManagerGrpcEndpointTest(
             grpcClient.cadastroChavePix(
                 RegistroChaveRequest.newBuilder()
                     .setIdCliente(CLIENTE_ID.toString())
-                    .setTipoChave(RegistroChaveRequest.TipoChave.CPF)
+                    .setTipoChave(TipoChaveGrpc.CPF)
                     .setChave("22847450084")
-                    .setTipoConta(RegistroChaveRequest.TipoConta.CONTA_CORRENTE)
+                    .setTipoConta(TipoContaGrpc.CONTA_CORRENTE)
                     .build()
             )
         }
@@ -166,8 +168,8 @@ internal class KeyManagerGrpcEndpointTest(
 
         val result = grpcClient.cadastroChavePix(RegistroChaveRequest.newBuilder()
             .setIdCliente(CLIENTE_ID.toString())
-            .setTipoChave(RegistroChaveRequest.TipoChave.ALEATORIA)
-            .setTipoConta(RegistroChaveRequest.TipoConta.CONTA_CORRENTE)
+            .setTipoChave(TipoChaveGrpc.ALEATORIA)
+            .setTipoConta(TipoContaGrpc.CONTA_CORRENTE)
             .build()
         )
 
@@ -193,9 +195,9 @@ internal class KeyManagerGrpcEndpointTest(
         val thrown = assertThrows<StatusRuntimeException> {
             grpcClient.cadastroChavePix(RegistroChaveRequest.newBuilder()
                 .setIdCliente(CLIENTE_ID.toString())
-                .setTipoChave(RegistroChaveRequest.TipoChave.CPF)
+                .setTipoChave(TipoChaveGrpc.CPF)
                 .setChave(chave)
-                .setTipoConta(RegistroChaveRequest.TipoConta.CONTA_CORRENTE)
+                .setTipoConta(TipoContaGrpc.CONTA_CORRENTE)
                 .build()
             )
         }

@@ -3,13 +3,13 @@ package br.com.pix.compartilhado.integracao
 import br.com.pix.compartilhado.chavePix.ChavePix
 import br.com.pix.compartilhado.chavePix.TipoChave
 import br.com.pix.compartilhado.chavePix.TipoConta
+import br.com.pix.consultaPix.DetalhesChavePix
+import br.com.pix.registraChave.ContaUsuario
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.MediaType
-import io.micronaut.http.annotation.Body
-import io.micronaut.http.annotation.Delete
-import io.micronaut.http.annotation.PathVariable
-import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.*
 import io.micronaut.http.client.annotation.Client
+import java.time.LocalDateTime
 
 @Client("\${bancocentral.pix.url}")
 interface BancoCentralClient {
@@ -25,6 +25,37 @@ interface BancoCentralClient {
         consumes = [MediaType.APPLICATION_XML]
     )
     fun removeChave(@PathVariable chave: String, @Body remocao: DeletePixKeyRequest): HttpResponse<DeletePixKeyResponse>
+
+    @Get("/keys/{chave}", produces = [MediaType.APPLICATION_XML],
+        consumes = [MediaType.APPLICATION_XML]
+    )
+    fun consultaChave(@PathVariable chave: String): HttpResponse<PixKeyDetailsResponse>
+}
+
+class PixKeyDetailsResponse(val keyType: KeyType,
+                            val key: String,
+                            val bankAccount: BankAccount,
+                            val owner: Owner,
+                            val createdAt: LocalDateTime
+) {
+    companion object {
+        fun PixKeyDetailsResponse.paraDetalhesChavePix(): DetalhesChavePix {
+            return DetalhesChavePix(
+                tipoChave = keyType.tipoModelo,
+                chavePix = key,
+                tipoConta = bankAccount.accountType.to(),
+                conta = ContaUsuario(
+                    instituicaoNome = bankAccount.participant,
+                    instituicaoIspb = bankAccount.participant,
+                    nomeTitular = owner.name,
+                    cpfTitular = owner.taxIdNumber,
+                    agencia = bankAccount.branch,
+                    numero = bankAccount.accountNumber
+                ),
+                criadoEm = createdAt
+            )
+        }
+    }
 }
 
 data class CreatePixKeyRequest(
@@ -90,6 +121,13 @@ data class BankAccount(
 
     enum class AccountType {
         CACC, SVGS;
+
+        fun to(): TipoConta {
+            return when (this) {
+                CACC -> TipoConta.CONTA_CORRENTE
+                SVGS -> TipoConta.CONTA_POUPANCA
+            }
+        }
 
         companion object {
             fun by(tipoConta: TipoConta): AccountType {

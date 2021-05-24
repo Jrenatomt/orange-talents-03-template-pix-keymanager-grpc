@@ -22,6 +22,7 @@ class ExceptionHandlingInterceptor : ServerInterceptor {
                 is ChavePixInexistenteException -> Status.NOT_FOUND
                 is ClienteNaoEncontradoException -> Status.NOT_FOUND
                 is IllegalStateException -> Status.FAILED_PRECONDITION
+                is IllegalArgumentException -> Status.INVALID_ARGUMENT
                 is PixExistenteException -> Status.ALREADY_EXISTS
                 else -> Status.UNKNOWN
             }

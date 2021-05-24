@@ -1,5 +1,7 @@
 package br.com.pix.registraChave.validacao
 
+import br.com.pix.TipoConta as TipoContaGrpc
+import br.com.pix.TipoChave as TipoChaveGrpc
 import br.com.pix.RegistroChaveRequest
 import br.com.pix.validacao.ErrorMessage
 import org.junit.jupiter.api.Assertions.*
@@ -23,7 +25,7 @@ internal class ValidaKtTest{
 
     @Test
     fun `validaTipoConta deve retornar um ErrorMessage quando nao for um Tipo Conta valido`() {
-        val result = validaTipoConta(RegistroChaveRequest.TipoConta.CONTA_DESCONHECIDA)
+        val result = validaTipoConta(TipoContaGrpc.CONTA_DESCONHECIDA)
         assertEquals("Tipo de conta deve ser válida", result?.description)
         assertTrue(result is ErrorMessage)
     }
@@ -38,13 +40,13 @@ internal class ValidaKtTest{
     @Test
     fun `validaTipoConta deve retornar null quando tipo conta valido`() {
         val tipoContaString ="CONTA_POUPANCA"
-        val tipoConta = RegistroChaveRequest.TipoConta.valueOf(tipoContaString)
+        val tipoConta =TipoContaGrpc.valueOf(tipoContaString)
         val result = validaTipoConta(tipoConta)
         assertEquals(null, result?.description)
     }
     @Test
     fun `validaTipoChave deve retornar um ErrorMessage quando nao for um Tipo Chave valido`() {
-        val result = validaTipoChave(RegistroChaveRequest.TipoChave.CHAVE_DESCONHECIDA)
+        val result = validaTipoChave(TipoChaveGrpc.CHAVE_DESCONHECIDA)
         assertEquals("Tipo de chave deve ser válida", result?.description)
         assertTrue(result is ErrorMessage)
     }
@@ -58,7 +60,7 @@ internal class ValidaKtTest{
     @Test
     fun `validaTipoChave deve retornar null quando tipo chave valido`() {
         val tipoChaveString = "CPF"
-        val tipoChave = RegistroChaveRequest.TipoChave.valueOf(tipoChaveString)
+        val tipoChave = TipoChaveGrpc.valueOf(tipoChaveString)
         val result = validaTipoChave(tipoChave)
         assertEquals(null, result?.description)
     }
@@ -67,9 +69,9 @@ internal class ValidaKtTest{
     fun `validaRequest deve retornar null quando request for valido`() {
         val request = RegistroChaveRequest.newBuilder()
             .setIdCliente("8d91cebf-c17b-4ba3-ac3e-d26dcfa7d041")
-            .setTipoChave(RegistroChaveRequest.TipoChave.EMAIL)
+            .setTipoChave(TipoChaveGrpc.EMAIL)
             .setChave("teste@teste.com")
-            .setTipoConta(RegistroChaveRequest.TipoConta.CONTA_POUPANCA)
+            .setTipoConta(TipoContaGrpc.CONTA_POUPANCA)
             .build()
         val result = request.valida()
         assertEquals(null, result)
@@ -79,9 +81,9 @@ internal class ValidaKtTest{
     fun `validaRequest deve retornar ErrorResponse quando request for invalido`() {
         val request = RegistroChaveRequest.newBuilder()
             .setIdCliente("idCliente")
-            .setTipoChave(RegistroChaveRequest.TipoChave.valueOf("CPF"))
+            .setTipoChave(TipoChaveGrpc.valueOf("CPF"))
             .setChave("chave")
-            .setTipoConta(RegistroChaveRequest.TipoConta.valueOf("CONTA_CORRENTE"))
+            .setTipoConta(TipoContaGrpc.valueOf("CONTA_CORRENTE"))
             .build()
         val result = request.valida()
         assertTrue(result is ErrorMessage)

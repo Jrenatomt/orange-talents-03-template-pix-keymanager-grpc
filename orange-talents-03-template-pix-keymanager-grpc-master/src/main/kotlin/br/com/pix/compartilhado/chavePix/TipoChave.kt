@@ -1,6 +1,6 @@
 package br.com.pix.compartilhado.chavePix
 
-import br.com.pix.RegistroChaveRequest
+import br.com.pix.TipoChave as TipoChaveGrpc
 import br.com.pix.validacao.ErrorMessage
 import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator
 import org.hibernate.validator.internal.constraintvalidators.hv.br.CPFValidator
@@ -92,12 +92,12 @@ enum class TipoChave {
     abstract fun valida(chave: String?): ErrorMessage?
 }
 
-fun requestParaTipoChave(message: RegistroChaveRequest.TipoChave?): TipoChave {
+fun requestParaTipoChave(message: TipoChaveGrpc?): TipoChave {
     return when (message) {
-        RegistroChaveRequest.TipoChave.CPF -> TipoChave.CPF
-        RegistroChaveRequest.TipoChave.CELULAR -> TipoChave.CELULAR
-        RegistroChaveRequest.TipoChave.EMAIL -> TipoChave.EMAIL
-        RegistroChaveRequest.TipoChave.ALEATORIA -> TipoChave.ALEATORIA
+        TipoChaveGrpc.CPF -> TipoChave.CPF
+        TipoChaveGrpc.CELULAR -> TipoChave.CELULAR
+        TipoChaveGrpc.EMAIL -> TipoChave.EMAIL
+        TipoChaveGrpc.ALEATORIA -> TipoChave.ALEATORIA
         else -> TipoChave.INVALIDA
     }
 }

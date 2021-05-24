@@ -1,5 +1,7 @@
 package br.com.pix.registraChave.validacao
 
+import br.com.pix.TipoConta as TipoContaGrpc
+import br.com.pix.TipoChave as TipoChaveGrpc
 import br.com.pix.RegistroChaveRequest
 import br.com.pix.compartilhado.chavePix.TipoChave
 import br.com.pix.compartilhado.chavePix.TipoConta
@@ -46,7 +48,7 @@ fun validaIdCliente(clientId: String?): ErrorMessage? {
     }
 }
 
-fun validaTipoConta(requestTipoConta: RegistroChaveRequest.TipoConta?): ErrorMessage? {
+fun validaTipoConta(requestTipoConta: TipoContaGrpc?): ErrorMessage? {
     if (requestTipoConta == null) {
         return ErrorMessage(description = "Tipo de conta é obrigatório")
     }
@@ -58,11 +60,10 @@ fun validaTipoConta(requestTipoConta: RegistroChaveRequest.TipoConta?): ErrorMes
     return null
 }
 
-fun validaTipoChave(requestTipoChave: RegistroChaveRequest.TipoChave?): ErrorMessage? {
+fun validaTipoChave(requestTipoChave: TipoChaveGrpc?): ErrorMessage? {
     if (requestTipoChave == null) {
         return ErrorMessage(description = "Tipo de chave é obrigatório")
     }
-
     if (requestParaTipoChave(requestTipoChave) == TipoChave.INVALIDA) {
         return ErrorMessage(description = "Tipo de chave deve ser válida")
     }
