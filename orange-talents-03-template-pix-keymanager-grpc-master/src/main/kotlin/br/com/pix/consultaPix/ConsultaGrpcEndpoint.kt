@@ -4,12 +4,14 @@ import br.com.pix.ConsultaChaveRequest
 import br.com.pix.ConsultaChaveResponse
 import br.com.pix.KeyManagerConsultaServiceGrpc
 import br.com.pix.compartilhado.chavePix.ChavePixRepository
+import br.com.pix.compartilhado.exception.ErrorHandler
 import br.com.pix.compartilhado.integracao.BancoCentralClient
 import br.com.pix.compartilhado.utils.ConsultaChaveResponseConverter
 import io.grpc.stub.StreamObserver
 import javax.inject.Singleton
 import javax.validation.Validator
 
+@ErrorHandler
 @Singleton
 class ConsultaGrpcEndpoint(private val repository: ChavePixRepository,
                            private val bancoCentralClient: BancoCentralClient,

@@ -4,12 +4,14 @@ import br.com.pix.validacao.errorResponse
 import br.com.pix.KeyManagerRemoveServiceGrpc
 import br.com.pix.RemocaoChaveRequest
 import br.com.pix.RemocaoChaveResponse
+import br.com.pix.compartilhado.exception.ErrorHandler
 import br.com.pix.remocaoChavePix.validacao.valida
 import io.grpc.Status
 import io.grpc.stub.StreamObserver
 import java.util.*
 import javax.inject.Singleton
 
+@ErrorHandler
 @Singleton
 class RemocaoChavePixEndpoint(private val removeService: RemoveChavePixService) :
     KeyManagerRemoveServiceGrpc.KeyManagerRemoveServiceImplBase() {

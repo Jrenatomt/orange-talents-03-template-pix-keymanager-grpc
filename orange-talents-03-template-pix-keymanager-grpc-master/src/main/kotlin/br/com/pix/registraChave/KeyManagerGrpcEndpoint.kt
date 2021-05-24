@@ -3,12 +3,14 @@ package br.com.pix.registraChave
 import br.com.pix.KeyManagerServiceGrpc
 import br.com.pix.RegistroChaveRequest
 import br.com.pix.RegistroChaveResponse
+import br.com.pix.compartilhado.exception.ErrorHandler
 import br.com.pix.registraChave.validacao.valida
 import br.com.pix.validacao.errorResponse
 import io.grpc.Status
 import io.grpc.stub.StreamObserver
 import javax.inject.Singleton
 
+@ErrorHandler
 @Singleton
 class KeyManagerGrpcEndpoint(private val cadastraChavePixService: CadastraChavePixService) :
     KeyManagerServiceGrpc.KeyManagerServiceImplBase() {

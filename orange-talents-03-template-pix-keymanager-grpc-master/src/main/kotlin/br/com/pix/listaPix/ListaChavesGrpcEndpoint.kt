@@ -3,12 +3,14 @@ package br.com.pix.listaPix
 import br.com.pix.*
 import br.com.pix.compartilhado.chavePix.ChavePixRepository
 import br.com.pix.compartilhado.exception.ClienteNaoEncontradoException
+import br.com.pix.compartilhado.exception.ErrorHandler
 import com.google.protobuf.Timestamp
 import io.grpc.stub.StreamObserver
 import java.time.ZoneId
 import java.util.*
 import javax.inject.Singleton
 
+@ErrorHandler
 @Singleton
 class ListaChavesGrpcEndpoint(private val repository: ChavePixRepository) :
     KeyManagerListaServiceGrpc.KeyManagerListaServiceImplBase() {
